@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "BFzIFNyc6i5wMBSY6lPrZGVTbQ+MlBnCWFgvIUh1OqmWAc7q4iEX1IooZFwqTX1DQqdqyT19UfJ+OWy7uQjC6w==",
+  "success": true,
+  "projectFilePath": "D:\\C#\\Microservices\\OcelotGateway\\catalogApi\\catalogApi.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Dzeki\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
+  ],
+  "logs": []
+}
