@@ -1,6 +1,18 @@
 {
     "Routes": [
         {
+            "DownstreamPathTemplate": "/api/user/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 6000
+                }
+            ],
+            "UpstreamPathTemplate": "/usr/{everything}",
+            "UpstreamHttpMethod": [ "Get", "Post"]
+        },
+        {
             "DownstreamPathTemplate": "/api/user",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
@@ -9,7 +21,8 @@
                     "Port": 6000
                 }
             ],
-            "UpstreamPathTemplate": "/usr"
+            "UpstreamPathTemplate": "/usr",
+            "UpstreamHttpMethod": [ "Get", "Post"]
         },
         {
             "DownstreamPathTemplate": "/api/article",
@@ -20,10 +33,12 @@
                     "Port": 4000
                 }
             ],
-            "UpstreamPathTemplate": "/art"
+            "UpstreamPathTemplate": "/art",
+            "UpstreamHttpMethod": [ "Get", "Post"]
         }
     ],
     "GlobalConfiguration": {
-        "BaseUrl": "http://localhost:5000"
+        "BaseUrl": "http://localhost:5000",
+        "RequestIdKey": "OcRequestId"
     }
 }
