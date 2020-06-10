@@ -20,10 +20,12 @@
                     "Port": 4000
                 }
             ],
-            "UpstreamPathTemplate": "/art"
+            "UpstreamPathTemplate": "/art",
+            "UpstreamHttpMethod": [ "Get", "Post"]
         }
     ],
     "GlobalConfiguration": {
-        "BaseUrl": "http://localhost:5000"
+        "BaseUrl": "http://localhost:5000",
+        "RequestIdKey": "OcRequestId"
     }
 }
