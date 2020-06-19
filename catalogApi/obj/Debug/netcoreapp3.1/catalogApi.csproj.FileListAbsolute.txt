@@ -18,3 +18,12 @@ D:\C#\Microservices\OcelotGateway\catalogApi\obj\Debug\netcoreapp3.1\staticwebas
 D:\C#\Microservices\OcelotGateway\catalogApi\obj\Debug\netcoreapp3.1\catalogApi.dll
 D:\C#\Microservices\OcelotGateway\catalogApi\obj\Debug\netcoreapp3.1\catalogApi.pdb
 D:\C#\Microservices\OcelotGateway\catalogApi\obj\Debug\netcoreapp3.1\catalogApi.genruntimeconfig.cache
+D:\C#\Microservices\OcelotGateway\catalogApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\C#\Microservices\OcelotGateway\catalogApi\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\C#\Microservices\OcelotGateway\catalogApi\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+D:\C#\Microservices\OcelotGateway\catalogApi\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+D:\C#\Microservices\OcelotGateway\catalogApi\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\C#\Microservices\OcelotGateway\catalogApi\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+D:\C#\Microservices\OcelotGateway\catalogApi\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+D:\C#\Microservices\OcelotGateway\catalogApi\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
+D:\C#\Microservices\OcelotGateway\catalogApi\obj\Debug\netcoreapp3.1\catalogApi.csproj.CopyComplete

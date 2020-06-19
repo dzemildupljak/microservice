@@ -79,12 +79,16 @@ namespace JwtIdentityCombine.Controllers
                         JwtConst.Issuer,
                         JwtConst.Audience,
                         claims,
-                        expires: DateTime.Now.AddMinutes(1),
+                        expires: DateTime.Now.AddMinutes(10),
                         signingCredentials: cred
                     );
                     var strToken = new JwtSecurityTokenHandler().WriteToken(token);
-                      
-                    return Ok(new UserResponse { Message = "Successfully logged", IsSuccess = true, JwtResponseToken = strToken});
+
+                    var expireTo = token.ValidTo;
+
+                    return Ok(new UserResponse 
+                                { Message = "Successfully logged", IsSuccess = true, 
+                                        JwtResponseToken = strToken, ExpireToToken = expireTo});
                 }
                 return BadRequest(new UserResponse { Message = "Insufficient information", IsSuccess = false});
             }
