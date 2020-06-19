@@ -1,3 +1,5 @@
+using System.Net;
+using System.Reflection.Metadata;
 using System.Reflection.Emit;
 using System.Text;
 using System.Security.Cryptography;
@@ -18,6 +20,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using userApi.Models;
 using Microsoft.IdentityModel.Tokens;
+using userApi.JWT;
 
 namespace userApi
 {
@@ -33,7 +36,7 @@ namespace userApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // using Microsoft.EntityFrameworkCore;
+            // Microsoft.EntityFrameworkCore;
             services.AddDbContext<UserContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -45,10 +48,26 @@ namespace userApi
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = 3;
             })
-                .AddEntityFrameworkStores<UserContext>()
-                .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<UserContext>();
 
+            // configure jwt authentication
             
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters()
+                        {
+                            ValidIssuer = JwtConst.Issuer,
+                            ValidAudience = JwtConst.Audience,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConst.Key)),
+
+                        };
+                    })
+                    .AddCookie(options => options.SlidingExpiration = true);
+
             services.AddControllers();
         }
 
@@ -63,6 +82,8 @@ namespace userApi
             // app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

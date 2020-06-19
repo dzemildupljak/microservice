@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using userApi.JWT;
 
 namespace userApi.DtoResponse
 {
@@ -7,5 +8,7 @@ namespace userApi.DtoResponse
         public string Message { get; set; }
         public bool IsSuccess { get; set; }
         public string ErrorMessage { get; set; }
+        public string JwtResponseToken { get; set; }
+        
     }
 }

@@ -1,15 +1,21 @@
-using System.Collections;
+using System.Net;
+using System.Security.Claims;
+using System.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using userApi.Dto;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 using userApi.Models;
+using userApi.Dto;
+using userApi.JWT;
 using userApi.DtoResponse;
 
-namespace userApi.Controllers
+namespace JwtIdentityCombine.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -19,45 +25,70 @@ namespace userApi.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserContext _context;
 
-        public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, UserContext context)
+        public UserController(UserManager<IdentityUser> userManager, 
+                                SignInManager<IdentityUser> signInManager,
+                                UserContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
         }
 
-
         // POST api/user/register
         [HttpPost("register")]
-        public async Task<ActionResult> Register([FromBody] DtoUserRegister model)
+        public async Task<ActionResult> RegisterUser([FromBody]DtoUserRegister model)
         {
-            var user = new IdentityUser
+            if (model.Password != model.ConfirmPassword)
+            {
+                return BadRequest(new UserResponse { Message = "Password and confirm password does not match.", IsSuccess = false });
+            }
+            var user = new IdentityUser 
             {
                 UserName = model.Username
             };
+
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                return Ok(new UserResponse { Message = "Succesfully created user", IsSuccess = true});
+                return Ok($"Uspesno kreiran user {model.Username}");
             }
             return BadRequest();
+
         }
 
         // POST api/user/login
         [HttpPost("login")]
-        public async Task<ActionResult> login([FromBody] DtoUserLogin model)
+        public async Task<ActionResult> LoginUser([FromBody]DtoUserLogin model)
         {
-            var user = await _userManager.FindByNameAsync(model.Username);
-
+            IdentityUser user = await _userManager.FindByNameAsync(model.Username);
             if (user != null)
             {
-                var result =  await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
-                if (result.Succeeded)
+                var signInRes = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+                if (signInRes.Succeeded)
                 {
-                    return Ok(new UserResponse { Message = "Succesfully logedin", IsSuccess = true});
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConst.Key));
+                    var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                    var claims = new[]
+                    {
+                        new Claim(JwtRegisteredClaimNames.Sub, model.Username),
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                        new Claim(JwtRegisteredClaimNames.UniqueName, model.Username)
+                    };
+
+                    var token = new JwtSecurityToken(
+                        JwtConst.Issuer,
+                        JwtConst.Audience,
+                        claims,
+                        expires: DateTime.Now.AddMinutes(1),
+                        signingCredentials: cred
+                    );
+                    var strToken = new JwtSecurityTokenHandler().WriteToken(token);
+                      
+                    return Ok(new UserResponse { Message = "Successfully logged", IsSuccess = true, JwtResponseToken = strToken});
                 }
+                return BadRequest(new UserResponse { Message = "Insufficient information", IsSuccess = false});
             }
-            return BadRequest();
+            return BadRequest(new UserResponse { Message = "Failed login, wrong username or password", IsSuccess = false});
         }
 
         // POST api/user/logout
@@ -70,7 +101,8 @@ namespace userApi.Controllers
 
         // GET api/user
         [HttpGet("")]
-        public ActionResult<IEnumerable<IdentityUser>> Get()
+        [Authorize(AuthenticationSchemes = JwtConst.AuthScheme)]
+        public ActionResult<IEnumerable<IdentityUser>> GetUsers()
         {
             return _context.Users.ToList();
         }
