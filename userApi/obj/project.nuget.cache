@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "oVxe2wfhRO7UunWwj5jeOfl7K2j5KvXHJuIXBtviGWLdKD7RMywQGyDZ3LrD01G3/zEIw2RQnIKz2GK0DAw8ig==",
+  "dgSpecHash": "G7Q9+UL5JeXLa4KOpBYxWNvpSUVmjtpyJ7xVg1Xhwdn6dtKxwgC5GRsBYWr/RYQt37pkmIehS6Zde2/vCUiiew==",
   "success": true,
   "projectFilePath": "D:\\C#\\Microservices\\OcelotGateway\\userApi\\userApi.csproj",
   "expectedPackageFiles": [
@@ -132,8 +132,7 @@
     "C:\\Users\\Dzeki\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\Dzeki\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\Dzeki\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\Dzeki\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
-    "C:\\Users\\Dzeki\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
+    "C:\\Users\\Dzeki\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
   ],
   "logs": []
 }

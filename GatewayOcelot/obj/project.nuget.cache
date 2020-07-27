@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "C8VfJv+PuzHoZCvJATQouPfH2LSUK/WdIlFElPYAHKXhigPSvdWp3CPExK3UZ5zUfmrbAFIk89cQS8vNoQpsDA==",
+  "dgSpecHash": "7E+U/LECcL7lIiZ0esLNlSlZpt3WWuDdbS70Ln6Fv0rKeZZgt4+8oESXgvATGtfo2hP8jSLSwaUC6nbl2uSGqg==",
   "success": true,
   "projectFilePath": "D:\\C#\\Microservices\\OcelotGateway\\GatewayOcelot\\GatewayOcelot.csproj",
   "expectedPackageFiles": [
@@ -15,8 +15,7 @@
     "C:\\Users\\Dzeki\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\Dzeki\\.nuget\\packages\\ocelot\\16.0.1\\ocelot.16.0.1.nupkg.sha512",
     "C:\\Users\\Dzeki\\.nuget\\packages\\system.componentmodel.annotations\\4.4.1\\system.componentmodel.annotations.4.4.1.nupkg.sha512",
-    "C:\\Users\\Dzeki\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.0\\system.diagnostics.diagnosticsource.4.7.0.nupkg.sha512",
-    "C:\\Users\\Dzeki\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
+    "C:\\Users\\Dzeki\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.0\\system.diagnostics.diagnosticsource.4.7.0.nupkg.sha512"
   ],
   "logs": []
 }
