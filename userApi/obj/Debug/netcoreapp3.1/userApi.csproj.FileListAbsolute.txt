@@ -65,3 +65,8 @@ D:\C#\Microservices\OcelotGateway\userApi\obj\Debug\netcoreapp3.1\userApi.csproj
 D:\C#\Microservices\OcelotGateway\userApi\obj\Debug\netcoreapp3.1\staticwebassets\userApi.StaticWebAssets.Manifest.cache
 D:\C#\Microservices\OcelotGateway\userApi\obj\Debug\netcoreapp3.1\staticwebassets\userApi.StaticWebAssets.xml
 D:\C#\Microservices\OcelotGateway\userApi\obj\Debug\netcoreapp3.1\userApi.genruntimeconfig.cache
+D:\C#\Microservices\OcelotGateway\userApi\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+D:\C#\Microservices\OcelotGateway\userApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+D:\C#\Microservices\OcelotGateway\userApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\C#\Microservices\OcelotGateway\userApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\C#\Microservices\OcelotGateway\userApi\obj\Debug\netcoreapp3.1\userApi.MvcApplicationPartsAssemblyInfo.cs

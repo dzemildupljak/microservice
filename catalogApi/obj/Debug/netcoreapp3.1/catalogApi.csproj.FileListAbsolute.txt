@@ -27,3 +27,8 @@ D:\C#\Microservices\OcelotGateway\catalogApi\bin\Debug\netcoreapp3.1\Microsoft.I
 D:\C#\Microservices\OcelotGateway\catalogApi\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 D:\C#\Microservices\OcelotGateway\catalogApi\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
 D:\C#\Microservices\OcelotGateway\catalogApi\obj\Debug\netcoreapp3.1\catalogApi.csproj.CopyComplete
+D:\C#\Microservices\OcelotGateway\catalogApi\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+D:\C#\Microservices\OcelotGateway\catalogApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+D:\C#\Microservices\OcelotGateway\catalogApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\C#\Microservices\OcelotGateway\catalogApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\C#\Microservices\OcelotGateway\catalogApi\obj\Debug\netcoreapp3.1\catalogApi.MvcApplicationPartsAssemblyInfo.cs

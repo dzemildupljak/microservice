@@ -25,7 +25,7 @@
             "UpstreamHttpMethod": [ "Get", "Post"]
         },
         {
-            "DownstreamPathTemplate": "/api/article",
+            "DownstreamPathTemplate": "/api/article/{everything}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
@@ -33,7 +33,7 @@
                     "Port": 4000
                 }
             ],
-            "UpstreamPathTemplate": "/art",
+            "UpstreamPathTemplate": "/art/{everything}",
             "UpstreamHttpMethod": [ "Get", "Post"]
         }
     ],
