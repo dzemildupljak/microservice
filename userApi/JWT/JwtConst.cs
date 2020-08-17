@@ -8,8 +8,5 @@ namespace userApi.JWT
         public const string Audience = "ApiUser";
         public const string Key = "1234567890123456";
 
-        public const string AuthScheme = 
-                "Identity.Application" + "," + JwtBearerDefaults.AuthenticationScheme;
-
     }
 }
