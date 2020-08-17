@@ -23,34 +23,63 @@ namespace JwtIdentityCombine.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserContext _context;
 
-        public UserController(UserManager<IdentityUser> userManager, 
+        public UserController(UserManager<IdentityUser> userManager,
                                 SignInManager<IdentityUser> signInManager,
+                                RoleManager<IdentityRole> roleManager,
                                 UserContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _context = context;
         }
 
         // POST api/user/register
         [HttpPost("register")]
-        public async Task<ActionResult> RegisterUser([FromBody]DtoUserRegister model)
+        public async Task<ActionResult> RegisterUser([FromBody] DtoUserRegister model)
         {
             if (model.Password != model.ConfirmPassword)
             {
                 return BadRequest(new UserResponse { Message = "Password and confirm password does not match.", IsSuccess = false });
             }
-            var user = new IdentityUser 
+            var user = new IdentityUser
             {
                 UserName = model.Username
             };
 
+            var checkRoleExist = await _roleManager.RoleExistsAsync(model.Name);
+            if (checkRoleExist == false)
+            {
+                // return BadRequest("A role does not exist so it cannot create a user without a role");
+                return BadRequest(new UserResponse
+                {
+                    Message = "A role does not exist so it cannot create a user without a role",
+                    IsSuccess = false
+                });
+            }
+            var checkIsInRole = await _userManager.IsInRoleAsync(user, model.Role);
+            if (checkIsInRole)
+            {
+                return Conflict("User already exists in this role");
+            }
+
+
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                return Ok($"Uspesno kreiran user {model.Username}");
+                var addUserToRole = await _userManager.AddToRoleAsync(user, model.Role);
+                if (addUserToRole.Succeeded)
+                {
+                    // return Ok($"Successfully created user {model.Username} and successfully added to role {model.Role}");
+                    return Ok(new UserResponse
+                    {
+                        Message = $"Successfully created user {model.Username} and successfully added to role {model.Role}",
+                        IsSuccess = true,
+                    });
+                }
             }
             return BadRequest();
 
@@ -58,7 +87,7 @@ namespace JwtIdentityCombine.Controllers
 
         // POST api/user/login
         [HttpPost("login")]
-        public async Task<ActionResult> LoginUser([FromBody]DtoUserLogin model)
+        public async Task<ActionResult> LoginUser([FromBody] DtoUserLogin model)
         {
             IdentityUser user = await _userManager.FindByNameAsync(model.Username);
             if (user != null)
@@ -86,13 +115,17 @@ namespace JwtIdentityCombine.Controllers
 
                     var expireTo = token.ValidTo;
 
-                    return Ok(new UserResponse 
-                                { Message = "Successfully logged", IsSuccess = true, 
-                                        JwtResponseToken = strToken, ExpireToToken = expireTo});
+                    return Ok(new UserResponse
+                    {
+                        Message = "Successfully logged",
+                        IsSuccess = true,
+                        JwtResponseToken = strToken,
+                        ExpireToToken = expireTo
+                    });
                 }
-                return BadRequest(new UserResponse { Message = "Insufficient information", IsSuccess = false});
+                return BadRequest(new UserResponse { Message = "Insufficient information", IsSuccess = false });
             }
-            return BadRequest(new UserResponse { Message = "Failed login, wrong username or password", IsSuccess = false});
+            return BadRequest(new UserResponse { Message = "Failed login, wrong username or password", IsSuccess = false });
         }
 
         // POST api/user/logout
@@ -100,12 +133,12 @@ namespace JwtIdentityCombine.Controllers
         public async Task<ActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return Ok(new UserResponse { Message = "Succesfully Logedout", IsSuccess = true});
+            return Ok(new UserResponse { Message = "Succesfully Logedout", IsSuccess = true });
         }
 
         // GET api/user
         [HttpGet("")]
-        [Authorize(AuthenticationSchemes = JwtConst.AuthScheme)]
+        [Authorize(Roles = "manager")]
         public ActionResult<IEnumerable<IdentityUser>> GetUsers()
         {
             return _context.Users.ToList();
