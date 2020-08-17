@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace userApi.Models {
-    public class UserContext : IdentityDbContext {
+namespace userApi.Models
+{
+    public class UserContext : IdentityDbContext
+    {
         public UserContext(DbContextOptions options) : base(options)
         {
-            
+
         }
-        public DbSet<User> UsersAcc { get; set; }
 
     }
 }

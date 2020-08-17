@@ -95,13 +95,16 @@ namespace JwtIdentityCombine.Controllers
                 var signInRes = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
                 if (signInRes.Succeeded)
                 {
+                    var roles = await _userManager.GetRolesAsync(user);
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConst.Key));
                     var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
                     var claims = new[]
                     {
                         new Claim(JwtRegisteredClaimNames.Sub, model.Username),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, model.Username)
+                        new Claim(JwtRegisteredClaimNames.UniqueName, model.Username),
+                        new Claim (ClaimTypes.Role, roles[0])
+
                     };
 
                     var token = new JwtSecurityToken(
@@ -138,7 +141,7 @@ namespace JwtIdentityCombine.Controllers
 
         // GET api/user
         [HttpGet("")]
-        [Authorize(Roles = "manager")]
+        [Authorize(Roles = "manager, admin")]
         public ActionResult<IEnumerable<IdentityUser>> GetUsers()
         {
             return _context.Users.ToList();

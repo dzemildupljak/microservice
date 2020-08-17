@@ -51,9 +51,9 @@ namespace userApi.Controllers
                 if (roleRes.Succeeded)
                 {
                     // return BadRequest("Role is not created");
-                    return Ok($"Uspesno kreirana rola koja nije postojala");
+                    return Ok($"Uspesno kreirana rola");
                 }
-                return BadRequest("Neuspesno kreirana rola koja ne postoji!");
+                return BadRequest("Neuspesno kreirana rola!");
             }
             return Conflict("Rola vec postoji!");
         }
