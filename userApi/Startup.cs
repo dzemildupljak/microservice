@@ -20,7 +20,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using userApi.Models;
 using Microsoft.IdentityModel.Tokens;
-using userApi.JWT;
 using Microsoft.OpenApi.Models;
 
 namespace userApi
@@ -63,9 +62,11 @@ namespace userApi
                     {
                         options.TokenValidationParameters = new TokenValidationParameters()
                         {
-                            ValidIssuer = JwtConst.Issuer,
-                            ValidAudience = JwtConst.Audience,
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConst.Key)),
+                            ValidIssuer = Configuration.GetValue<string>("TokenConst:Issuer"),
+                            ValidAudience = Configuration.GetValue<string>("TokenConst:Audience"),
+                            // ValidIssuer = JwtConst.Issuer,
+                            // ValidAudience = JwtConst.Audience,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("TokenConst:Key").Value)),
 
                         };
                     })

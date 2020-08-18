@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using userApi.JWT;
 
 namespace userApi.DtoResponse
 {
@@ -12,6 +11,6 @@ namespace userApi.DtoResponse
         public string ErrorMessage { get; set; }
         public string JwtResponseToken { get; set; }
         public DateTime ExpireToToken { get; set; }
-        
+
     }
 }

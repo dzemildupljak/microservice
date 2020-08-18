@@ -12,8 +12,8 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using userApi.Models;
 using userApi.Dto;
-using userApi.JWT;
 using userApi.DtoResponse;
+using Microsoft.Extensions.Configuration;
 
 namespace JwtIdentityCombine.Controllers
 {
@@ -25,16 +25,19 @@ namespace JwtIdentityCombine.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserContext _context;
+        private readonly IConfiguration _configuration;
 
         public UserController(UserManager<IdentityUser> userManager,
                                 SignInManager<IdentityUser> signInManager,
                                 RoleManager<IdentityRole> roleManager,
-                                UserContext context)
+                                UserContext context,
+                                IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _context = context;
+            _configuration = configuration;
         }
 
         // POST api/user/register
@@ -96,7 +99,8 @@ namespace JwtIdentityCombine.Controllers
                 if (signInRes.Succeeded)
                 {
                     var roles = await _userManager.GetRolesAsync(user);
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConst.Key));
+                    var keyJson = _configuration.GetSection("TokenConst:Key").Value;
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyJson));
                     var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
                     var claims = new[]
                     {
@@ -107,9 +111,12 @@ namespace JwtIdentityCombine.Controllers
 
                     };
 
+                    var issuerJson = _configuration.GetValue<string>("TokenConst:Issuer");
+                    var audienceJson = _configuration.GetValue<string>("TokenConst:Audience");
+
                     var token = new JwtSecurityToken(
-                        JwtConst.Issuer,
-                        JwtConst.Audience,
+                        issuerJson,
+                        audienceJson,
                         claims,
                         expires: DateTime.Now.AddMinutes(10),
                         signingCredentials: cred
