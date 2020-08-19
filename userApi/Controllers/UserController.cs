@@ -14,8 +14,9 @@ using userApi.Models;
 using userApi.Dto;
 using userApi.DtoResponse;
 using Microsoft.Extensions.Configuration;
+using userApi.Repo;
 
-namespace JwtIdentityCombine.Controllers
+namespace userApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -26,18 +27,21 @@ namespace JwtIdentityCombine.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserContext _context;
         private readonly IConfiguration _configuration;
+        private readonly ITokenGenerator _tokenGenerator;
 
         public UserController(UserManager<IdentityUser> userManager,
                                 SignInManager<IdentityUser> signInManager,
                                 RoleManager<IdentityRole> roleManager,
                                 UserContext context,
-                                IConfiguration configuration)
+                                IConfiguration configuration,
+                                ITokenGenerator tokenGenerator)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _context = context;
             _configuration = configuration;
+            _tokenGenerator = tokenGenerator;
         }
 
         // POST api/user/register
@@ -56,7 +60,6 @@ namespace JwtIdentityCombine.Controllers
             var checkRoleExist = await _roleManager.RoleExistsAsync(model.Name);
             if (checkRoleExist == false)
             {
-                // return BadRequest("A role does not exist so it cannot create a user without a role");
                 return BadRequest(new UserResponse
                 {
                     Message = "A role does not exist so it cannot create a user without a role",
@@ -76,7 +79,6 @@ namespace JwtIdentityCombine.Controllers
                 var addUserToRole = await _userManager.AddToRoleAsync(user, model.Role);
                 if (addUserToRole.Succeeded)
                 {
-                    // return Ok($"Successfully created user {model.Username} and successfully added to role {model.Role}");
                     return Ok(new UserResponse
                     {
                         Message = $"Successfully created user {model.Username} and successfully added to role {model.Role}",
@@ -99,38 +101,14 @@ namespace JwtIdentityCombine.Controllers
                 if (signInRes.Succeeded)
                 {
                     var roles = await _userManager.GetRolesAsync(user);
-                    var keyJson = _configuration.GetSection("TokenConst:Key").Value;
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyJson));
-                    var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                    var claims = new[]
-                    {
-                        new Claim(JwtRegisteredClaimNames.Sub, model.Username),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, model.Username),
-                        new Claim (ClaimTypes.Role, roles[0])
 
-                    };
-
-                    var issuerJson = _configuration.GetValue<string>("TokenConst:Issuer");
-                    var audienceJson = _configuration.GetValue<string>("TokenConst:Audience");
-
-                    var token = new JwtSecurityToken(
-                        issuerJson,
-                        audienceJson,
-                        claims,
-                        expires: DateTime.Now.AddMinutes(10),
-                        signingCredentials: cred
-                    );
-                    var strToken = new JwtSecurityTokenHandler().WriteToken(token);
-
-                    var expireTo = token.ValidTo;
+                    var strToken = _tokenGenerator.AccessJWToken(user, roles[0]).ToString();
 
                     return Ok(new UserResponse
                     {
                         Message = "Successfully logged",
                         IsSuccess = true,
-                        JwtResponseToken = strToken,
-                        ExpireToToken = expireTo
+                        JwtResponseToken = strToken
                     });
                 }
                 return BadRequest(new UserResponse { Message = "Insufficient information", IsSuccess = false });

@@ -21,6 +21,7 @@ using Microsoft.Extensions.Logging;
 using userApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using userApi.Repo;
 
 namespace userApi
 {
@@ -49,6 +50,10 @@ namespace userApi
                 options.Password.RequiredLength = 3;
             })
                 .AddEntityFrameworkStores<UserContext>();
+
+            // add repo pattern
+
+            services.AddScoped<ITokenGenerator, TokenGenerator>();
 
             // configure jwt authentication
 
